@@ -5,6 +5,7 @@ from bratreader.word import Word
 from typing import List, Dict
 from brat2ocra.ocra_token import OcraToken
 from brat2ocra.ocra_sentence import OcraSentence
+import brat2ocra.utils as utils
 
 class DocConverter:
     doc: AnnotatedDocument
@@ -69,8 +70,8 @@ class DocConverter:
                 governor_span_id = DocConverter.__get_span_id(governor_word)
                 governor_idx = token_idx_by_span_id[governor_span_id]
 
-            # TODO what about lemma?
-            return OcraToken(token_idx, word.form, word.form, governor_idx, relation)
+            lemma = utils.lemmatize(word.form)
+            return OcraToken(token_idx, word.form, lemma, governor_idx, relation)
 
         def create_ocra_sentence(sentence_idx: int) -> OcraSentence:
             words = sentences_words[sentence_idx]

@@ -42,7 +42,7 @@ class DocConverter:
             for idx, word in enumerate(sorted_words):
                 # make the token index in the sentence retrievable by the span of the word
                 span_id = DocConverter.__get_span_id(word)
-                token_idx_by_span_id[span_id] = idx
+                token_idx_by_span_id[span_id] = idx + 1 # start at 1
 
         def create_ocra_token(word: Word) -> OcraToken:
             if len(word.annotations) != 1:
@@ -61,7 +61,7 @@ class DocConverter:
             governor_idx = None
             if len(links.keys()) == 0:
                 relation = 'root'
-                governor_idx = token_idx
+                governor_idx = 0
             else:
                 relation = list(links.keys())[0]
                 governor_annotations: List[Annotation] = links[relation]

@@ -11,6 +11,6 @@ class OcraSentence:
 
     def to_dict(self):
         return {
-            'index': self.index,
+            'id': self.index,
             'tokens': list(map(lambda t: t.to_dict(), self.tokens))
         }

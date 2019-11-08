@@ -52,6 +52,10 @@ class DocConverter:
             labels: Dict[str, List[str]] = annotation.labels
             links: Dict[str, List[Annotation]] = annotation.links
 
+            # determine POS-tag
+            upos = list(labels.keys())[0]
+
+            # determine head and relation to head
             token_idx = token_idx_by_span_id[DocConverter.__get_span_id(word)]
             relation = None
             governor_idx = None
@@ -71,7 +75,8 @@ class DocConverter:
                 governor_idx = token_idx_by_span_id[governor_span_id]
 
             lemma = utils.lemmatize(word.form)
-            return OcraToken(token_idx, word.form, lemma, governor_idx, relation)
+            xpos = utils.get_xpos(upos, word.form)
+            return OcraToken(index=token_idx, text=word.form, lemma=lemma, upos=upos, xpos=xpos, governor_index=governor_idx, dependency_relation=relation)
 
         def create_ocra_sentence(sentence_idx: int) -> OcraSentence:
             words = sentences_words[sentence_idx]
